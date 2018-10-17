@@ -30,7 +30,17 @@ namespace Lab9
                     throw new EndOfStreamException();
             }
             return personInfo;
-
+        }
+        static void DisplayAllPeopleAndInfo(List<Hashtable> AllInfo)
+        {
+            for(int key = 1; key < AllInfo[0].Count + 1; key++)
+            {
+                for(int i =0; i < NUMBEROFINFOPOINTS; i++)
+                {
+                    System.Console.Write (AllInfo[i][key] + " ");
+                }
+                System.Console.WriteLine();
+            }
         }
 
         static void Main(string[] args)
@@ -47,10 +57,11 @@ namespace Lab9
                 if(people[0].Count == 0)
                 {
                     System.Console.WriteLine("No Info Loaded");
-                    //throw new EndOfStreamException();
+                    throw new EndOfStreamException();
                 }
             }
-
+            System.Console.WriteLine(people[1][1]);
+            DisplayAllPeopleAndInfo(people);
         }
     }
 }
