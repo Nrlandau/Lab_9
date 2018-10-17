@@ -32,14 +32,28 @@ namespace Lab9
             }
             return personInfo;
         }
-        static string[] GetPersonFromInput(StreamReader sr)
+        static void ConsoleInput(List<Hashtable> data)
         {
-            string [] personInfo = new string[NUMBEROFINFOPOINTS];
+            string cont = "";
+            do
+            {
+                AddPerson(data,GetPersonFromInput());
+                cont =  "";
+                while(!Regex.IsMatch(cont,"^[nNYy]"))
+                {
+                System.Console.WriteLine("Enter another name?");
+                cont = Console.ReadLine();
+                }
+                
+            }while(!Regex.IsMatch(cont,"^[nN]"));
+        }
+        static string[] GetPersonFromInput()
+        {
+            string [] personInfo = {"name", "hometown", "favorite food"};
             for(int i =0; i < NUMBEROFINFOPOINTS; i++)
             {
-                System.Console.WriteLine("INPUT A THING or -1 to quit");
-                if((personInfo[i] = sr.ReadLine()) == "-1")
-                    throw new EndOfStreamException();
+                System.Console.WriteLine("Input a {0}" , personInfo[i]);
+                personInfo[i] = Console.ReadLine();
             }
             return personInfo;
         }
@@ -120,27 +134,41 @@ namespace Lab9
                 System.Console.WriteLine("Input a file");
 
                 File = new StreamReader(Console.ReadLine());
+                
+                try{
+                    while (true)
+                    AddPerson(people,GetPersonFromFile(File));
+                }
+                catch (EndOfStreamException)
+                {
+                    if(people[0].Count == 0)
+                    {
+                        System.Console.WriteLine("No Info Loaded");
+                        throw new EndOfStreamException();
+                    }
+                }
+                finally
+                {
+                    File.Close(); 
+                }
             }
             catch (FileNotFoundException)
             {
-                File = new StreamReader(Console.OpenStandardInput()); // This doesn't work right now
+                
                 System.Console.WriteLine("File Does not exist, Using Console input.");
+                ConsoleInput(people);
             }
-            try{
-                while (true)
-                AddPerson(people,GetPersonFromFile(File));
-            }
-            catch (EndOfStreamException)
+            catch(UnauthorizedAccessException)
             {
-                if(people[0].Count == 0)
-                {
-                    System.Console.WriteLine("No Info Loaded");
-                    throw new EndOfStreamException();
-                }
+                
+                System.Console.WriteLine("You do no have perission to use that file, Using Console input.");
+                ConsoleInput(people);
             }
-            finally
+            catch(ArgumentException)
             {
-               File.Close(); 
+                
+                System.Console.WriteLine("No File inputed, Using Console input.");
+                ConsoleInput(people);
             }
             //DisplayAllPeopleAndInfo(people);
             while (Loop(people));
