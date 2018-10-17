@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+Lab 9 by Nicholas Landau
+This program does a thing.
+ */
+
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,20 +14,20 @@ namespace Lab9
 
     class Program
     {
-        const int NUMBEROFINFOPOINTS = 3;
-        static void AddPerson(List<Hashtable> People, string [] info)
+        const int NUMBEROFINFOPOINTS = 3; //Name,Home,Food
+        static void AddPerson(List<Hashtable> People, string [] info) // adds one person and their info into the list.
         {
             for(int i = 0; i < NUMBEROFINFOPOINTS; i++)
                 People[i].Add(People[i].Count+1,info[i]);
         }
-        static List<Hashtable> CreatePeople()
+        static List<Hashtable> CreatePeople() // initlises the List
         {
              List<Hashtable> allPeople = new List<Hashtable>();
              for(int i = 0; i < NUMBEROFINFOPOINTS; i++)
                 allPeople.Add(new Hashtable());
              return allPeople;
         }
-        static string[] GetPersonFromFile(StreamReader sr)
+        static string[] GetPersonFromFile(StreamReader sr) // gets name/hometwon/favorite food from file.
         {
             string [] personInfo = new string[NUMBEROFINFOPOINTS];
             for(int i =0; i < NUMBEROFINFOPOINTS; i++)
@@ -32,7 +37,7 @@ namespace Lab9
             }
             return personInfo;
         }
-        static void ConsoleInput(List<Hashtable> data)
+        static void ConsoleInput(List<Hashtable> data) // main loop for user input into the list.
         {
             string cont = "";
             do
@@ -47,7 +52,7 @@ namespace Lab9
                 
             }while(!Regex.IsMatch(cont,"^[nN]"));
         }
-        static string[] GetPersonFromInput()
+        static string[] GetPersonFromInput() // for user input into the list
         {
             string [] personInfo = {"name", "hometown", "favorite food"};
             for(int i =0; i < NUMBEROFINFOPOINTS; i++)
@@ -58,7 +63,7 @@ namespace Lab9
             return personInfo;
         }
         
-        static void DisplayAllPeopleAndInfo(List<Hashtable> AllInfo)
+        static void DisplayAllPeopleAndInfo(List<Hashtable> AllInfo) //unused  displays everying in the list.
         {
             for(int key = 1; key < AllInfo[0].Count + 1; key++)
             {
@@ -73,7 +78,7 @@ namespace Lab9
         {
             int keyNum = 0;
             string whatInfo;
-            while(true)
+            while(true) // get user key
             {
                 try
                 {
@@ -89,7 +94,7 @@ namespace Lab9
                     System.Console.WriteLine("That is not a number");
                 }
             }
-            while(true)
+            while(true) //get info from one user
             {
                 System.Console.WriteLine("{0} is {1}, what do you want to know? ({2} / {3})",keyNum,data[0][keyNum],"Hometown","Favorite Food");
                 whatInfo = Console.ReadLine();
@@ -106,7 +111,7 @@ namespace Lab9
                     System.Console.WriteLine("Sorry, I do not have that data about {0}",data[0][keyNum]);
                 }
                 whatInfo = "";
-                while(!Regex.IsMatch(whatInfo,"^[yYNn]"))
+                while(!Regex.IsMatch(whatInfo,"^[yYNn]")) //exit single user
                 {
                     System.Console.WriteLine("Do you want to know more about {0}?(Yes/No)",data[0][keyNum]);
                     whatInfo = Console.ReadLine();
@@ -115,9 +120,9 @@ namespace Lab9
                     break;
             }
             whatInfo = "";
-            while(!Regex.IsMatch(whatInfo,"^[yYNn]"))
+            while(!Regex.IsMatch(whatInfo,"^[yYNn]")) // exit program
             {
-                System.Console.WriteLine("Do you want to know about another student?(Yes/No)");
+                System.Console.WriteLine("Do you want to know about another user?(Yes/No)");
                 whatInfo = Console.ReadLine();
             }
             if(Regex.IsMatch(whatInfo,"^[nN]"))
@@ -128,10 +133,10 @@ namespace Lab9
         static void Main(string[] args)
         {
             List<Hashtable> people = CreatePeople();
-            StreamReader File;// = new StreamReader(Console.OpenStandardInput());
+            StreamReader File;
             try
             {
-                System.Console.WriteLine("Input a file");
+                System.Console.WriteLine("Input a file"); // getting file input
 
                 File = new StreamReader(Console.ReadLine());
                 
@@ -152,6 +157,7 @@ namespace Lab9
                     File.Close(); 
                 }
             }
+            // If The file input fails use Console input.
             catch (FileNotFoundException)
             {
                 
@@ -170,8 +176,7 @@ namespace Lab9
                 System.Console.WriteLine("No File inputed, Using Console input.");
                 ConsoleInput(people);
             }
-            //DisplayAllPeopleAndInfo(people);
-            while (Loop(people));
+            while (Loop(people)); // main loop.
 
         }
     }
