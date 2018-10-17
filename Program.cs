@@ -65,7 +65,7 @@ namespace Lab9
                 {
                     System.Console.WriteLine("Input a number(1-{0})",data[0].Count);
                     keyNum = int.Parse(Console.ReadLine());
-                    if(keyNum >= 1 || keyNum <= data[0].Count)
+                    if(keyNum >= 1 && keyNum <= data[0].Count)
                         break;
                     System.Console.WriteLine("That Data does not exist");
 
@@ -117,7 +117,9 @@ namespace Lab9
             StreamReader File;// = new StreamReader(Console.OpenStandardInput());
             try
             {
-                File = new StreamReader("people.txt");
+                System.Console.WriteLine("Input a file");
+
+                File = new StreamReader(Console.ReadLine());
             }
             catch (FileNotFoundException)
             {
