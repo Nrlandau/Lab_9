@@ -31,6 +31,17 @@ namespace Lab9
             }
             return personInfo;
         }
+        static string[] GetPersonFromInput(StreamReader sr)
+        {
+            string [] personInfo = new string[NUMBEROFINFOPOINTS];
+            for(int i =0; i < NUMBEROFINFOPOINTS; i++)
+            {
+                System.Console.WriteLine("INPUT A THING or -1 to quit");
+                if((personInfo[i] = sr.ReadLine()) == "-1")
+                    throw new EndOfStreamException();
+            }
+            return personInfo;
+        }
         static void DisplayAllPeopleAndInfo(List<Hashtable> AllInfo)
         {
             for(int key = 1; key < AllInfo[0].Count + 1; key++)
@@ -45,11 +56,19 @@ namespace Lab9
 
         static void Main(string[] args)
         {
-            StreamReader File = new StreamReader("people.txt");
             List<Hashtable> people = CreatePeople();
+            StreamReader File;// = new StreamReader(Console.OpenStandardInput());
             try
             {
-            while (true)
+                File = new StreamReader("people.txt");
+            }
+            catch (FileNotFoundException)
+            {
+                File = new StreamReader(Console.OpenStandardInput());
+                System.Console.WriteLine("File Does not exist, Using Console input.");
+            }
+            try{
+                while (true)
                 AddPerson(people,GetPersonFromFile(File));
             }
             catch (EndOfStreamException)
@@ -59,8 +78,12 @@ namespace Lab9
                     System.Console.WriteLine("No Info Loaded");
                     throw new EndOfStreamException();
                 }
+                
             }
-            System.Console.WriteLine(people[1][1]);
+            finally
+            {
+               File.Close(); 
+            }
             DisplayAllPeopleAndInfo(people);
         }
     }
