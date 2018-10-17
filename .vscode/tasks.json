@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Lab9.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "run",
+                "${workspaceFolder}"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
